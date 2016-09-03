@@ -140,11 +140,12 @@ module BootstrapForm
 
     bootstrap_method_alias :check_box
 
-    def radio_button_with_bootstrap(name, value, *args)
+    def radio_button_with_bootstrap(name, value, *args, &block)
       options = args.extract_options!.symbolize_keys!
       args << options.except(:label, :label_class, :help, :inline)
 
-      html = radio_button_without_bootstrap(name, value, *args) + " " + options[:label]
+      label_content = block_given? ? capture(&block) : options[:label]
+      html = radio_button_without_bootstrap(name, value, *args) + " " + label_content
 
       disabled_class = " disabled" if options[:disabled]
       label_class    = options[:label_class]
